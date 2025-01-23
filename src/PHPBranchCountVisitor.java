@@ -35,6 +35,11 @@ public class PHPBranchCountVisitor implements PHPVisitor{
     defaultVisit(node, data);
   }
   public void visit(ASTLabeledStatement node, Object data){
+    if (data instanceof Integer){
+      if ((Integer )data == 55){
+        this.numberBranch++;
+      }
+    }
     defaultVisit(node, data);
   }
   public void visit(ASTExpressionStatement node, Object data){

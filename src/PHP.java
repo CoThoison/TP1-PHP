@@ -620,7 +620,11 @@ public class PHP/*@bgen(jjtree)*/ implements PHPTreeConstants, PHPConstants {/*@
         try {
             /*@bgen(jjtree) LabeledStatement */
             ASTLabeledStatement jjtn000 = new ASTLabeledStatement(JJTLABELEDSTATEMENT);
-            jjtn000.jjtAccept(parser.phpBranchCountVisitor, null);
+            if (jj_ntk == -1) {
+                jjtn000.jjtAccept(parser.phpBranchCountVisitor, jj_ntk_f());
+            } else {
+                jjtn000.jjtAccept(parser.phpBranchCountVisitor, jj_ntk);
+            }
             boolean jjtc000 = true;
             jjtree.openNodeScope(jjtn000);
             try {
@@ -845,6 +849,7 @@ public class PHP/*@bgen(jjtree)*/ implements PHPTreeConstants, PHPConstants {/*@
                                 break label_6;
                             }
                             jj_consume_token(ELSEIF);
+                            jjtn000.jjtAccept(parser.phpBranchCountVisitor, null);
                             jj_consume_token(105);
                             Expression();
                             jj_consume_token(106);
