@@ -117,5 +117,10 @@ public class JJTPHPState {
       node_created = false;
     }
   }
+
+  public void jjtreeSetValue(Node n, PHPDataDetect o){
+    n.jjtSetValue(o);
+  }
+
 }
 /* JavaCC - OriginalChecksum=65ffb31cf4eb3edfc7f53c8096e7e5e2 (do not edit this line) */

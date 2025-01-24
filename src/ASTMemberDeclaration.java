@@ -12,9 +12,9 @@ class ASTMemberDeclaration extends SimpleNode {
 
 
   /** Accept the visitor. **/
-  public void jjtAccept(PHPVisitor visitor, Object data) {
+  public void jjtAccept(PHPVisitor visitor, int branchAdd) {
 
-    visitor.visit(this, data);
+    visitor.visit(this, branchAdd);
   }
 }
 /* JavaCC - OriginalChecksum=7c7e734bf417c8c1590b1bf91ef910df (do not edit this line) */

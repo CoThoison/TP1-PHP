@@ -12,9 +12,9 @@ class ASTParameterList extends SimpleNode {
 
 
   /** Accept the visitor. **/
-  public void jjtAccept(PHPVisitor visitor, Object data) {
+  public void jjtAccept(PHPVisitor visitor, int branchAdd) {
 
-    visitor.visit(this, data);
+    visitor.visit(this, branchAdd);
   }
 }
 /* JavaCC - OriginalChecksum=32b1fa753a3e7fc48bda87792d38a94e (do not edit this line) */

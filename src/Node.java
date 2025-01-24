@@ -34,6 +34,11 @@ interface Node {
   public int getId();
 
   /** Accept the visitor. **/
-  public void jjtAccept(PHPVisitor visitor, Object data);
+  public void jjtAccept(PHPVisitor visitor, int branchAdd);
+
+  public void jjtSetValue(PHPDataDetect value);
+
+  public Object jjtGetValue();
+
 }
 /* JavaCC - OriginalChecksum=b6a39f5f1830c5549a356ce105664015 (do not edit this line) */

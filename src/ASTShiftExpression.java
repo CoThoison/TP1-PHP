@@ -12,9 +12,9 @@ class ASTShiftExpression extends SimpleNode {
 
 
   /** Accept the visitor. **/
-  public void jjtAccept(PHPVisitor visitor, Object data) {
+  public void jjtAccept(PHPVisitor visitor, int branchAdd) {
 
-    visitor.visit(this, data);
+    visitor.visit(this, branchAdd);
   }
 }
 /* JavaCC - OriginalChecksum=6d2f132daf84b2f3ef5f067b72088328 (do not edit this line) */

@@ -12,9 +12,9 @@ class ASTString extends SimpleNode {
 
 
   /** Accept the visitor. **/
-  public void jjtAccept(PHPVisitor visitor, Object data) {
+  public void jjtAccept(PHPVisitor visitor, int branchAdd) {
 
-    visitor.visit(this, data);
+    visitor.visit(this, branchAdd);
   }
 }
 /* JavaCC - OriginalChecksum=7f8d711c8b247de35fb6094deaec4e17 (do not edit this line) */

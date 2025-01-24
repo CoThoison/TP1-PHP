@@ -12,9 +12,9 @@ class ASTAssignmentOperator extends SimpleNode {
 
 
   /** Accept the visitor. **/
-  public void jjtAccept(PHPVisitor visitor, Object data) {
+  public void jjtAccept(PHPVisitor visitor, int branchAdd) {
 
-    visitor.visit(this, data);
+    visitor.visit(this, branchAdd);
   }
 }
 /* JavaCC - OriginalChecksum=36b5045e9f0ef2d390a6e0ee5a0da1a6 (do not edit this line) */

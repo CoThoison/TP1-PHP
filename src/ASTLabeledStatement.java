@@ -2,6 +2,7 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=true,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 public
 class ASTLabeledStatement extends SimpleNode {
+  int caseCounter = 0;
   public ASTLabeledStatement(int id) {
     super(id);
   }
@@ -12,9 +13,14 @@ class ASTLabeledStatement extends SimpleNode {
 
 
   /** Accept the visitor. **/
-  public void jjtAccept(PHPVisitor visitor, Object data) {
+  public void jjtAccept(PHPVisitor visitor, int branchAdd) {
 
-    visitor.visit(this, data);
+    visitor.visit(this, branchAdd + this.caseCounter);
   }
+
+  public void increaseCaseCounter () {
+    this.caseCounter++;
+  }
+
 }
 /* JavaCC - OriginalChecksum=fdadcca52e7a4661e9bbc523d12b046e (do not edit this line) */

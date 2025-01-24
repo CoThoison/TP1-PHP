@@ -12,9 +12,9 @@ class ASTLogicalTextXorExpression extends SimpleNode {
 
 
   /** Accept the visitor. **/
-  public void jjtAccept(PHPVisitor visitor, Object data) {
+  public void jjtAccept(PHPVisitor visitor, int branchAdd) {
 
-    visitor.visit(this, data);
+    visitor.visit(this, branchAdd);
   }
 }
 /* JavaCC - OriginalChecksum=a72ba8320e421f85e1e7ef60a9b3112c (do not edit this line) */

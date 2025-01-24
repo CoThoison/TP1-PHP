@@ -12,9 +12,9 @@ class ASTInterfaceDeclaration extends SimpleNode {
 
 
   /** Accept the visitor. **/
-  public void jjtAccept(PHPVisitor visitor, Object data) {
+  public void jjtAccept(PHPVisitor visitor, int branchAdd) {
 
-    visitor.visit(this, data);
+    visitor.visit(this, branchAdd);
   }
 }
 /* JavaCC - OriginalChecksum=ccc83970a9e89fbb8b3fa1c5c3e67428 (do not edit this line) */

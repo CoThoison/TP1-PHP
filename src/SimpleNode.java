@@ -6,7 +6,7 @@ class SimpleNode implements Node {
   protected Node parent;
   protected Node[] children;
   protected int id;
-  protected Object value;
+  protected PHPDataDetect value;
   protected PHP parser;
 
   public SimpleNode(int i) {
@@ -46,24 +46,24 @@ class SimpleNode implements Node {
     return (children == null) ? 0 : children.length;
   }
 
-  public void jjtSetValue(Object value) { this.value = value; }
+  public void jjtSetValue(PHPDataDetect value) { this.value = value; }
   public Object jjtGetValue() { return value; }
 
   /** Accept the visitor. **/
-  public void jjtAccept(PHPVisitor visitor, Object data)
+  public void jjtAccept(PHPVisitor visitor, int branchAdd)
 {
-    visitor.visit(this, data);
+    visitor.visit(this, branchAdd);
   }
 
   /** Accept the visitor. **/
-  public Object childrenAccept(PHPVisitor visitor, Object data)
+  public Object childrenAccept(PHPVisitor visitor, int branchAdd)
 {
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
-        children[i].jjtAccept(visitor, data);
+        children[i].jjtAccept(visitor, branchAdd);
       }
     }
-    return data;
+    return branchAdd;
   }
 
   /* You can override these two methods in subclasses of SimpleNode to

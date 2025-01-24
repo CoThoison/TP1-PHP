@@ -3,187 +3,191 @@ public class PHPBranchCountVisitor implements PHPVisitor{
 
   private int numberBranch = 1;
 
-  public void defaultVisit(SimpleNode node, Object data){
-    node.childrenAccept(this, data);
-  }
-  public void visit(SimpleNode node, Object data){
-    defaultVisit(node, data);
-  }
-  public void visit(ASTPhpPage node, Object data){
-    defaultVisit(node, data);
-  }
-  public void visit(ASTHtmlBlock node, Object data){
-    defaultVisit(node, data);
-  }
-  public void visit(ASTStatement node, Object data){
-    defaultVisit(node, data);
-  }
-  public void visit(ASTThrowStatement node, Object data){
-    defaultVisit(node, data);
-  }
-  public void visit(ASTTryBlock node, Object data){
-    this.numberBranch++;
-    defaultVisit(node, data);
-  }
-  public void visit(ASTEndOfStatement node, Object data){
-    defaultVisit(node, data);
-  }
-  public void visit(ASTEmbeddedHtml node, Object data){
-    defaultVisit(node, data);
-  }
-  public void visit(ASTDefineStatement node, Object data){
-    defaultVisit(node, data);
-  }
-  public void visit(ASTLabeledStatement node, Object data){
-    if (data instanceof Integer){
-      if ((Integer )data == 55){
-        this.numberBranch++;
-      }
+  public void defaultVisit(SimpleNode node, int branchAdd){
+    if (node.value != null && node.value.getName().equalsIgnoreCase("mysql_query")){
+      System.out.println("TEST " + node.value.getName());
     }
-    defaultVisit(node, data);
+    node.childrenAccept(this, 0);
   }
-  public void visit(ASTExpressionStatement node, Object data){
-    defaultVisit(node, data);
+  public void visit(SimpleNode node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTCompoundStatement node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTPhpPage node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTSelectionStatement node, Object data){
+  public void visit(ASTHtmlBlock node, int branchAdd){
+    defaultVisit(node, 0);
+  }
+  public void visit(ASTStatement node, int branchAdd){
+    defaultVisit(node, 0);
+  }
+  public void visit(ASTThrowStatement node, int branchAdd){
+    defaultVisit(node, 0);
+  }
+  public void visit(ASTTryBlock node, int branchAdd){
     this.numberBranch++;
-    defaultVisit(node, data);
+    defaultVisit(node, 0);
   }
-  public void visit(ASTIterationStatement node, Object data){
+  public void visit(ASTEndOfStatement node, int branchAdd){
+    defaultVisit(node, 0);
+  }
+  public void visit(ASTEmbeddedHtml node, int branchAdd){
+    defaultVisit(node, 0);
+  }
+  public void visit(ASTDefineStatement node, int branchAdd){
+    defaultVisit(node, 0);
+  }
+
+  //Cas CASE, on enlève 1 pour le SWITCH
+  public void visit(ASTLabeledStatement node, int branchAdd){
+    this.numberBranch = this.numberBranch + branchAdd;
+    defaultVisit(node, 0);
+  }
+  public void visit(ASTExpressionStatement node, int branchAdd){
+    defaultVisit(node, 0);
+  }
+  public void visit(ASTCompoundStatement node, int branchAdd){
+    defaultVisit(node, 0);
+  }
+
+  //Cas SWITCH et IF
+  public void visit(ASTSelectionStatement node, int branchAdd){
     this.numberBranch++;
-    defaultVisit(node, data);
+    this.numberBranch = this.numberBranch + branchAdd;
+    defaultVisit(node, 0);
   }
-  public void visit(ASTJumpStatement node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTIterationStatement node, int branchAdd){
+    this.numberBranch++;
+    defaultVisit(node, 0);
   }
-  public void visit(ASTParameterList node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTJumpStatement node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTParameter node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTParameterList node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTClassDeclaration node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTParameter node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTClassMembers node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTClassDeclaration node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTMemberDeclaration node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTClassMembers node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTInterfaceDeclaration node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTMemberDeclaration node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTInterfaceMembers node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTInterfaceDeclaration node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTInterfaceMember node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTInterfaceMembers node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTIncludeStatement node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTInterfaceMember node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTEchoStatement node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTIncludeStatement node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTEchoStatement node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTLogicalTextOrExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTLogicalTextXorExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTLogicalTextOrExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTLogicalTextAndExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTLogicalTextXorExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTAssignmentExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTLogicalTextAndExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTAssignmentOperator node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTAssignmentExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTConditionalExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTAssignmentOperator node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTLogical_Or_Expression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTConditionalExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTLogical_And_Expression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTLogical_Or_Expression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTBitwiseOrExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTLogical_And_Expression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTBitwiseXorExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTBitwiseOrExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTBitwiseAndExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTBitwiseXorExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTEqualityExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTBitwiseAndExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTRelationalExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTEqualityExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTShiftExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTRelationalExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTAdditiveExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTShiftExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTMultiplicativeExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTAdditiveExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTCastExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTMultiplicativeExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTUnaryExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTCastExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTPrefixIncDecExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTUnaryExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTPostfixIncDecExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTPrefixIncDecExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTInstanceOfExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTPostfixIncDecExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTPostfixExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTInstanceOfExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTPrimaryExpression node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTPostfixExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTArray node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTPrimaryExpression node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTClassInstantiation node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTArray node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTVariable node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTClassInstantiation node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTArgumentExpressionList node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTVariable node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTConstant node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTArgumentExpressionList node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTString node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTConstant node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTDoubleStringLiteral node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTString node, int branchAdd){
+    defaultVisit(node, 0);
   }
-  public void visit(ASTVisibility node, Object data){
-    defaultVisit(node, data);
+  public void visit(ASTDoubleStringLiteral node, int branchAdd){
+    defaultVisit(node, 0);
+  }
+  public void visit(ASTVisibility node, int branchAdd){
+    defaultVisit(node, 0);
   }
 
   public int getNumberBranch(){

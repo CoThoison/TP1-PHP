@@ -12,9 +12,9 @@ class ASTLogical_Or_Expression extends SimpleNode {
 
 
   /** Accept the visitor. **/
-  public void jjtAccept(PHPVisitor visitor, Object data) {
+  public void jjtAccept(PHPVisitor visitor, int branchAdd) {
 
-    visitor.visit(this, data);
+    visitor.visit(this, branchAdd);
   }
 }
 /* JavaCC - OriginalChecksum=d2fec4ee4de88645c05c9a76d1a6b94a (do not edit this line) */
