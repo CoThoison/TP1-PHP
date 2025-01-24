@@ -1,0 +1,1 @@
+<?php if ( get_option( 'db_version' ) == $wp_db_version || !is_blog_installed() ) : ?>

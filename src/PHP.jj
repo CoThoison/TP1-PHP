@@ -31,6 +31,7 @@ options {
                  
                                
                          
+  STATIC = false;
 }
 
 
@@ -39,7 +40,7 @@ PARSER_BEGIN(PHP)
 import java.util.*;
 
 public  class PHP/*@bgen(jjtree)*/implements PHPTreeConstants/*@egen*/ {/*@bgen(jjtree)*/
-  protected static JJTPHPState jjtree = new JJTPHPState();
+  protected JJTPHPState jjtree = new JJTPHPState();
 
 /*@egen*/
 	private static PHP parser ;
