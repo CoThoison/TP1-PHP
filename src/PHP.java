@@ -5774,8 +5774,8 @@ public class PHP/*@bgen(jjtree)*/ implements PHPTreeConstants, PHPConstants {/*@
     static private int jj_gc = 0;
 
     {
-        //enable_tracing();
-        disable_tracing();
+        enable_tracing();
+        //disable_tracing();
     }
 
     /**

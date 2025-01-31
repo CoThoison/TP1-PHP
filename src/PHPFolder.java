@@ -13,7 +13,7 @@ public class PHPFolder/*@bgen(jjtree)*/ implements PHPTreeConstants, PHPConstant
 
     public static void main(String[] args) {
         if (args.length != 1) {
-            System.out.println("PHP Parser Version 0.1Alpha:  Usage is : java PhpFileFilter <folder_absolute_path>");
+            System.out.println("PHP Parser Version 0.1Alpha: Usage is : java PhpFileAnalyzer <folder_absolute_path>");
             return;
         }
 
@@ -25,47 +25,54 @@ public class PHPFolder/*@bgen(jjtree)*/ implements PHPTreeConstants, PHPConstant
             return;
         }
 
+        processFolder(folder);
+    }
+
+    private static void processFolder(File folder) {
         FilenameFilter phpFilter = (dir, name) -> name.endsWith(".php");
         File[] phpFiles = folder.listFiles(phpFilter);
 
-        if (phpFiles != null && phpFiles.length > 0) {
-            System.out.println(".php files in the folder:");
+        if (phpFiles != null) {
             for (File phpFile : phpFiles) {
-                System.out.println(phpFile.getName());
-                main(folderPath + "/" + phpFile.getName());
+                System.out.println("Processing file: " + phpFile.getAbsolutePath());
+                processPhpFile(phpFile.getAbsolutePath());
             }
-        } else {
-            System.out.println("No .php files found in the folder.");
+        }
+
+        File[] subfolders = folder.listFiles(File::isDirectory);
+        if (subfolders != null) {
+            for (File subfolder : subfolders) {
+                processFolder(subfolder);
+            }
         }
     }
 
-    public static void main(String arg) {
-
-        System.out.println("PHP Parser Version 0.1Alpha:  Reading from file " + arg + " . . .");
+    private static void processPhpFile(String filePath) {
+        System.out.println("PHP Parser Version 0.1Alpha: Reading from file " + filePath + " . . .");
         try {
-            FileInputStream fis = new java.io.FileInputStream(arg);
+            FileInputStream fis = new FileInputStream(filePath);
             if (parser == null) {
-                // Initialize the parser for the first file
                 parser = new PHPFolder(fis);
             } else {
                 parser.ReInit(fis);
             }
         } catch (java.io.FileNotFoundException e) {
-            System.out.println("PHP Parser Version 0.1:  File " + arg + " not found.");
+            System.out.println("PHP Parser Version 0.1: File " + filePath + " not found.");
             return;
         }
+
         parser.token_source.SwitchTo(HTML_STATE);
         try {
             parser.PhpPage();
-            System.out.println("PHP Parser Version 0.1Alpha:  PHP program parsed successfully.");
+            System.out.println("PHP Parser Version 0.1Alpha: PHP program parsed successfully.");
         } catch (ParseException e) {
-            System.out.println("PHP Parser Version 0.1Alpha:  Encountered errors during parse.");
+            System.out.println("PHP Parser Version 0.1Alpha: Encountered errors during parse.");
             System.out.println(e.getMessage());
         }
 
         System.out.println("Le nombre de branchements dans ce code est de : " + phpBranchCountVisitor.getNumberBranch());
-
     }
+
 
     static final public void PhpPage() throws ParseException {
         trace_call("PhpPage");
