@@ -69,13 +69,16 @@ class ASTSQLQueryVisitor:
             print(f"SQL query : \"execute\" is called "
                 f"at line {self.ast.get_position(node_id)[0]}")
         if self.ast.get_type(node_id) == "MethodCall" and self.ast.get_image(node_id) == "exec":
-            print(f"SQL query : \"exec\" is called "
-                f"at line {self.ast.get_position(node_id)[0]}")
+            if self.ast.get_children(self.ast.get_children(self.ast.get_parents(node_id)[0])[0])[-1] != [] :
+                if self.ast.get_image(self.ast.get_children(self.ast.get_children(self.ast.get_parents(node_id)[0])[0])[-1]) == "mysql":
+                    print(f"SQL query : \"exec\" is called "
+                        f"at line {self.ast.get_position(node_id)[0]}")
 
         for child_id in self.ast.get_children(node_id):
                 self.__visit(child_id)
 
-for filename in glob.iglob("D:/Images/Cours/3A Poly/LOG6302A - Analyse d'application et perspective de cyber-sécurité/TP/TP1 source/TP1_LOG6308A/log6302a_lab1/code_to_analyze/test_cve" + '**/*.json', recursive=True):
+#for filename in glob.iglob("D:/Images/Cours/3A Poly/LOG6302A - Analyse d'application et perspective de cyber-sécurité/TP/TP1 source/TP1_LOG6308A/log6302a_lab1/code_to_analyze/test_cve" + '**/*.json', recursive=True):
+for filename in glob.iglob("D:/Images/Cours/3A Poly/LOG6302A - Analyse d'application et perspective de cyber-sécurité/TP/TP1 source/TP1_LOG6308A/log6302a_lab1/code_to_analyze/wordpress_ast/wp-includes/SimplePie/Cache/**/*.json", recursive=True):
     ast = reader.read_ast(filename)
     #ast = reader.read_ast("../example/example_1.php.ast.json")
     #ast_2 = reader.read_ast("../example/example_2.php.ast.json")
