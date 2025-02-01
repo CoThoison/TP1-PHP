@@ -69,7 +69,7 @@ class ASTSQLQueryVisitor:
             print(f"SQL query : \"execute\" is called "
                 f"at line {self.ast.get_position(node_id)[0]}")
         if self.ast.get_type(node_id) == "MethodCall" and self.ast.get_image(node_id) == "exec":
-            if self.ast.get_children(self.ast.get_children(self.ast.get_parents(node_id)[0])[0])[-1] != [] :
+            if self.ast.get_children(self.ast.get_children(self.ast.get_parents(node_id)[0])[0]) != [] :
                 if self.ast.get_image(self.ast.get_children(self.ast.get_children(self.ast.get_parents(node_id)[0])[0])[-1]) == "mysql":
                     print(f"SQL query : \"exec\" is called "
                         f"at line {self.ast.get_position(node_id)[0]}")
