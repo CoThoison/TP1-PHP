@@ -42,6 +42,7 @@ class ASTSQLQueryVisitor:
         self.__visit(self.ast.get_root())
 
     def __visit(self, node_id: int):
+        # SQL patterns requested in the lab
         if self.ast.get_type(node_id) == "FunctionCall" and self.ast.get_image(node_id) == "mysql_query":
             print(f"SQL query : \"mysql_query\" is called "
                 f"at line {self.ast.get_position(node_id)[0]}")
@@ -54,7 +55,25 @@ class ASTSQLQueryVisitor:
         if self.ast.get_type(node_id) == "MethodCall" and self.ast.get_image(node_id) == "exec":
             print(f"SQL query : \"exec\" is called "
                 f"at line {self.ast.get_position(node_id)[0]}")
-
+        # SQL patterns added
+        if self.ast.get_type(node_id) == "MethodCall" and self.ast.get_image(node_id) == "query":
+            print(f"SQL query : \"query\" is called "
+                f"at line {self.ast.get_position(node_id)[0]}")
+        if self.ast.get_type(node_id) == "MethodCall" and self.ast.get_image(node_id) == "get_results":
+            print(f"SQL query : \"get_results\" is called "
+                f"at line {self.ast.get_position(node_id)[0]}")
+        if self.ast.get_type(node_id) == "MethodCall" and self.ast.get_image(node_id) == "get_var":
+            print(f"SQL query : \"get_var\" is called "
+                f"at line {self.ast.get_position(node_id)[0]}")
+        if self.ast.get_type(node_id) == "MethodCall" and self.ast.get_image(node_id) == "get_row":
+            print(f"SQL query : \"get_row\" is called "
+                f"at line {self.ast.get_position(node_id)[0]}")
+        if self.ast.get_type(node_id) == "MethodCall" and self.ast.get_image(node_id) == "get_col":
+            print(f"SQL query : \"get_col\" is called "
+                f"at line {self.ast.get_position(node_id)[0]}")
+        if self.ast.get_type(node_id) == "MethodCall" and self.ast.get_image(node_id) == "real_query":
+            print(f"SQL query : \"real_query\" is called "
+                f"at line {self.ast.get_position(node_id)[0]}")
         for child_id in self.ast.get_children(node_id):
                 self.__visit(child_id)
 
