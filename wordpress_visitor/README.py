@@ -6,11 +6,12 @@
 
 from code_analysis import AST, ASTReader
 import glob
+import argparse
+import sys
 
 reader = ASTReader()
 
 # Create a visitor that returns function definition position in source file
-
 
 class ASTFunctionDefinitionVisitor:
     def __init__(self):
@@ -29,7 +30,7 @@ class ASTFunctionDefinitionVisitor:
         for child_id in self.ast.get_children(node_id):
             self.__visit(child_id)
 
-# create a visitor that returns SQL query position in source file
+# Create a visitor that returns SQL query position in source file
 
 class ASTSQLQueryVisitor:
     def __init__(self):
@@ -47,12 +48,37 @@ class ASTSQLQueryVisitor:
         if self.ast.get_type(node_id) == "FunctionCall" and self.ast.get_image(node_id) == "mysqli_query":
             print(f"SQL query : \"mysqli_query\" is called "
                 f"at line {self.ast.get_position(node_id)[0]}")
+        if self.ast.get_type(node_id) == "MethodCall" and self.ast.get_image(node_id) == "execute":
+            print(f"SQL query : \"execute\" is called "
+                f"at line {self.ast.get_position(node_id)[0]}")
+        if self.ast.get_type(node_id) == "MethodCall" and self.ast.get_image(node_id) == "exec":
+            print(f"SQL query : \"exec\" is called "
+                f"at line {self.ast.get_position(node_id)[0]}")
+
+        for child_id in self.ast.get_children(node_id):
+                self.__visit(child_id)
+
+# Create a visitor that returns CVE position in source file
+
+class ASTCVEVisitor:
+    def __init__(self):
+        self.ast = None
+    
+    def visit(self, ast: AST):
+        self.ast = ast
+        print(f"Visit AST from file {self.ast.get_filename()}")
+        self.__visit(self.ast.get_root())
+    
+    def __visit(self, node_id: int):
         if self.ast.get_type(node_id) == "FunctionCall" and self.ast.get_image(node_id) == "fsockopen":
             print(f"CVE 2017-7189 : \"fsockopen\" is called "
                 f"at line {self.ast.get_position(node_id)[0]}")
-        if self.ast.get_type(node_id) == "FunctionCall" and self.ast.get_image(node_id) == "filter_var" and self.ast.recursive_name_node("FILTER_VALIDATE_URL", node_id) :
-            print(f"CVE 2021-21705 & 2020-7071 : \"filter_var\" is called with argument FILTER_VALIDATE_URL "
-                f"at line {self.ast.get_position(node_id)[0]}")
+        if self.ast.get_type(node_id) == "FunctionCall" and self.ast.get_image(node_id) == "filter_var":
+            # Arguments of filter_var are the children of the ArgumentList node which is the former node of the function
+            vars_id = [self.ast.get_children(node_id - 1)[0], self.ast.get_children(node_id - 1)[1]]
+            if self.ast.get_image(vars_id[0]) == "FILTER_VALIDATE_URL" or self.ast.get_image(vars_id[1]) == "FILTER_VALIDATE_URL":
+                print(f"CVE 2021-21705 & 2020-7071 : \"filter_var\" is called with argument FILTER_VALIDATE_URL "
+                    f"at line {self.ast.get_position(node_id)[0]}")
         if self.ast.get_type(node_id) == "FunctionCall" and self.ast.get_image(node_id) == "openssl_encrypt":
             print(f"CVE-2020-7069 : \"openssl_encrypt\" is called "
                 f"at line {self.ast.get_position(node_id)[0]}")
@@ -65,51 +91,28 @@ class ASTSQLQueryVisitor:
         if self.ast.get_type(node_id) == "FunctionCall" and self.ast.get_image(node_id) == "iconv_mime_decode_headers":
             print(f"CVE-2019-11039 : \"iconv_mime_decode_headers\" is called "
                 f"at line {self.ast.get_position(node_id)[0]}")
-        if self.ast.get_type(node_id) == "MethodCall" and self.ast.get_image(node_id) == "execute":
-            print(f"SQL query : \"execute\" is called "
-                f"at line {self.ast.get_position(node_id)[0]}")
-        if self.ast.get_type(node_id) == "MethodCall" and self.ast.get_image(node_id) == "exec":
-            if self.ast.get_children(self.ast.get_children(self.ast.get_parents(node_id)[0])[0]) != [] :
-                if self.ast.get_image(self.ast.get_children(self.ast.get_children(self.ast.get_parents(node_id)[0])[0])[-1]) == "mysql":
-                    print(f"SQL query : \"exec\" is called "
-                        f"at line {self.ast.get_position(node_id)[0]}")
 
         for child_id in self.ast.get_children(node_id):
                 self.__visit(child_id)
 
-#for filename in glob.iglob("D:/Images/Cours/3A Poly/LOG6302A - Analyse d'application et perspective de cyber-sécurité/TP/TP1 source/TP1_LOG6308A/log6302a_lab1/code_to_analyze/test_cve" + '**/*.json', recursive=True):
-for filename in glob.iglob("D:/Images/Cours/3A Poly/LOG6302A - Analyse d'application et perspective de cyber-sécurité/TP/TP1 source/TP1_LOG6308A/log6302a_lab1/code_to_analyze/wordpress_ast/wp-includes/SimplePie/Cache/**/*.json", recursive=True):
+
+# Analyze ASTs in the specified root directory
+parser = argparse.ArgumentParser(description="Analyze an Abstract Syntax Tree (AST) from a specified root directory.")
+parser.add_argument('path', type=str, help="Absolute or relative path to the AST root directory to analyze")
+if len(sys.argv) == 1:
+    parser.print_help()
+    sys.exit(1)
+args = parser.parse_args()
+
+
+for filename in glob.iglob(args.path + '**/*.json', recursive=True):
     ast = reader.read_ast(filename)
-    #ast = reader.read_ast("../example/example_1.php.ast.json")
-    #ast_2 = reader.read_ast("../example/example_2.php.ast.json")
-    #ast_3 = reader.read_ast("../example/example_3.php.ast.json")
-
-    # Access AST information
-
-    '''
-    ast.get_root()       # Return the root node ID
-    ast.get_type(45)     # Return the type of node 45
-    ast.get_image(45)    # Return the image of node 45
-    ast.get_children(45) # Return the list of children
-    ast.get_parent(45)   # Return the list of parents
-    ast.get_position(45) # Return the position in source file as an
-                        # array [line_begin, line_end, column_begin, column_end, token_begin, token_end]
-    '''
-
     root = ast.get_root()
-    #print(f"Root node ID is {root}")
-    #print(f"Root type is {ast.get_type(root)}")
 
-    #print(f"Node root children are {ast.get_children(root)}")
-    #for node_id in ast.get_children(root):
-        #print(f"Node type of {node_id} is {ast.get_type(node_id)}")
-    #print("\n")
-
-
-    # visitor = ASTFunctionDefinitionVisitor()
-    # visitor.visit(ast)
-    # print("\n")
-
+    # AST Node visit by SQL query detection visitor
     visitor = ASTSQLQueryVisitor()
+    visitor.visit(ast)
+    # AST Node visit by function definition visitor
+    visitor = ASTCVEVisitor()
     visitor.visit(ast)
     print("\n")
