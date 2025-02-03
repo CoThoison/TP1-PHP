@@ -40,8 +40,8 @@ public class MainWPAnalysis {
     }
 
     /**
-        * List all JSON files in the given directory.
-        * @param rootDirectory the root directory to search for JSON files
+     * List all JSON files in the given directory.
+     * @param rootDirectory the root directory to search for JSON files
      */
     private static List<Path> listJsonFiles(String rootDirectory) throws IOException {
         List<Path> jsonFiles = new ArrayList<>();
@@ -127,6 +127,10 @@ class ASTTransformer {
  * WPAstVisitor class to visit AST nodes and detect SQL function calls.
  */
 class WPAstVisitor implements ASTVisitor {
+
+    private static final Set<String> SQL_FUNCTIONS = Set.of("mysql_query", "mysqli_query");
+    private static final Set<String> SQL_METHODS = Set.of("execute", "exec", "query", "get_results", "get_row", "get_col", "get_var");
+
     /**
      * Visit the given AST node and detect SQL function calls.
      * @param node the AST node to visit
@@ -137,12 +141,12 @@ class WPAstVisitor implements ASTVisitor {
         String image = (String) node.getAttributes().get("image");
         String fileName = (String) node.getAttributes().get("filename");
 
-        if ("FunctionCall".equals(type) && ("mysql_query".equals(image) || "mysqli_query".equals(image))) {
-            System.out.println("Detected SQL function call in line: " + node.getAttributes().get("line_begin") + " in file " + fileName);
+        if ("FunctionCall".equals(type) && image != null && SQL_FUNCTIONS.contains(image)) {
+            System.out.println("Detected SQL function call " + image + " in line: " + node.getAttributes().get("line_begin") + " in file " + fileName);
         }
 
-        if ("MethodCall".equals(type) && ("execute".equals(image) || "exec".equals(image))) {
-            System.out.println("Detected SQL method call in line: " + node.getAttributes().get("line_begin") + " in file " + fileName);
+        if ("MethodCall".equals(type) && image != null && SQL_METHODS.contains(image)) {
+            System.out.println("Detected SQL method call " + image +" in line: " + node.getAttributes().get("line_begin") + " in file " + fileName);
         }
     }
 }
