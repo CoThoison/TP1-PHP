@@ -4,16 +4,6 @@ public class PHPBranchCountVisitor implements PHPVisitor {
     private int numberBranch = 1;
 
     public void defaultVisit(SimpleNode node, int branchAdd) {
-        if (node.value != null) {
-            if (node.value.getName().equalsIgnoreCase("mysql_query")
-                    || node.value.getName().equalsIgnoreCase("mysqli_query")
-                    || node.value.getName().equalsIgnoreCase("execute")
-                    || node.value.getName().equalsIgnoreCase("exec")) {
-                System.out.println("---------------------------------------------------------------------------------");
-                System.out.println("DETECTED : " + node.value.getName());
-                System.out.println("---------------------------------------------------------------------------------");
-            }
-        }
         node.childrenAccept(this, 0);
     }
 
