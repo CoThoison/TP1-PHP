@@ -53,8 +53,10 @@ class ASTSQLQueryVisitor:
             print(f"SQL query : \"execute\" is called "
                 f"at line {self.ast.get_position(node_id)[0]}")
         if self.ast.get_type(node_id) == "MethodCall" and self.ast.get_image(node_id) == "exec":
-            print(f"SQL query : \"exec\" is called "
-                f"at line {self.ast.get_position(node_id)[0]}")
+            if self.ast.get_children(self.ast.get_children(self.ast.get_parents(node_id)[0])[0])[-1] != [] :
+                if self.ast.get_image(self.ast.get_children(self.ast.get_children(self.ast.get_parents(node_id)[0])[0])[-1]) == "mysql":
+                    print(f"SQL query : \"exec\" is called "
+                        f"at line {self.ast.get_position(node_id)[0]}")
         # SQL patterns added
         if self.ast.get_type(node_id) == "MethodCall" and self.ast.get_image(node_id) == "query":
             print(f"SQL query : \"query\" is called "
@@ -92,12 +94,9 @@ class ASTCVEVisitor:
         if self.ast.get_type(node_id) == "FunctionCall" and self.ast.get_image(node_id) == "fsockopen":
             print(f"CVE 2017-7189 : \"fsockopen\" is called "
                 f"at line {self.ast.get_position(node_id)[0]}")
-        if self.ast.get_type(node_id) == "FunctionCall" and self.ast.get_image(node_id) == "filter_var":
-            # Arguments of filter_var are the children of the ArgumentList node which is the former node of the function
-            vars_id = [self.ast.get_children(node_id - 1)[0], self.ast.get_children(node_id - 1)[1]]
-            if self.ast.get_image(vars_id[0]) == "FILTER_VALIDATE_URL" or self.ast.get_image(vars_id[1]) == "FILTER_VALIDATE_URL":
-                print(f"CVE 2021-21705 & 2020-7071 : \"filter_var\" is called with argument FILTER_VALIDATE_URL "
-                    f"at line {self.ast.get_position(node_id)[0]}")
+        if self.ast.get_type(node_id) == "FunctionCall" and self.ast.get_image(node_id) == "filter_var" and self.ast.recursive_name_node("FILTER_VALIDATE_URL", node_id) :
+            print(f"CVE 2021-21705 & 2020-7071 : \"filter_var\" is called with argument FILTER_VALIDATE_URL "
+                f"at line {self.ast.get_position(node_id)[0]}")
         if self.ast.get_type(node_id) == "FunctionCall" and self.ast.get_image(node_id) == "openssl_encrypt":
             print(f"CVE-2020-7069 : \"openssl_encrypt\" is called "
                 f"at line {self.ast.get_position(node_id)[0]}")

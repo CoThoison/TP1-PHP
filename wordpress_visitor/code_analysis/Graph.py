@@ -63,6 +63,18 @@ class Graph:
 
     def get_root(self) -> int:
         return self.__rootId
+    
+    def recursive_name_node(self, name, node) -> bool:
+        if self.get_children(node) == [] :
+            return self.get_image(node) == name
+        else:
+            return any(self.recursive_name_node(name, child) for child in self.get_children(node))
+        
+    def recursive_name_print(self, node) -> str:
+        if self.get_children(node) == []:
+            return self.get_image(node)
+        else:
+            return " ".join(self.recursive_name_print(child) for child in self.get_children(node))
 
     def set_root(self, node_id: int):
         self.__rootId = node_id
